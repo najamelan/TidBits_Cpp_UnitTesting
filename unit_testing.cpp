@@ -1,17 +1,18 @@
-/// \file  unittesting.cpp
-/// \This is the source file for a base class for automated unit tests
+/// \file  unit_testing.cpp
+/// This is the source file for a base class for automated unit tests
 
-/** \file  unittesting.cpp
- * Code comes from the Flood3 library by Roberto Lopez and is under the GNU Lesser General Public License
+/** \file  unit_testing.cpp
+ * Original code comes from the Flood3 library by Roberto Lopez and is under the GNU Lesser General Public License
+ * Changes have been made by Naja Melan. Roberto Lopez cannot be held responsible for this code.
  * http://www.cimne.com/flood/
  */
 
-#include"unittesting.hpp"
+#include <tidbits/unit_testing.hpp>
 
-#include<iostream>
-#include<fstream>
-#include<string>
-#include<sstream>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
 #include <time.h>
 
 
@@ -19,18 +20,17 @@
 namespace tidbits
 {
 
-// GENERAL CONSTRUCTOR
 
 /// General constructor. It constructs a test case with default values:
 /// <ul>
 /// <li> Message: empty
-/// <li> Tests count: 0
+/// <li> Tests count : 0
 /// <li> Tests passed: 0
 /// <li> Tests failed: 0
 /// <li> Display: true
 /// </ul>
 
-UnitTesting::UnitTesting(void)
+UnitTesting::UnitTesting()
 {
    message 					= ""		;
 
@@ -108,9 +108,9 @@ UnitTesting::set_tests_count( int new_tests_count )
 
    if( new_tests_count < 0 )
    {
-      std::cout << "Flood Warning: UnitTesting class." << std::endl
-                << "void set_tests_count(int) method." << std::endl
-                << "Test count must be equal or greater than zero." << std::endl;
+      std::cout << "Warning: UnitTesting class." 							<< std::endl
+                << "void set_tests_count(int) method." 					<< std::endl
+                << "Test count must be equal or greater than zero." 	<< std::endl;
    }
 
    #endif
@@ -131,9 +131,9 @@ UnitTesting::set_tests_passed_count( int new_tests_passed_count )
 
    if( new_tests_passed_count < 0 )
    {
-      std::cout << "Flood Warning: UnitTesting class." << std::endl
-                << "void set_tests_passed_count(int) method." << std::endl
-                << "Test pased count must be equal or greater than zero." << std::endl;
+      std::cout << "Warning: UnitTesting class." 									<< std::endl
+                << "void set_tests_passed_count(int) method."	 				<< std::endl
+                << "Test pased count must be equal or greater than zero." 	<< std::endl;
    }
 
    #endif
@@ -154,8 +154,8 @@ UnitTesting::set_tests_failed_count( int new_tests_failed_count )
 
    if( new_tests_failed_count < 0 )
    {
-      std::cout << "Flood Warning: UnitTesting class." << std::endl
-                << "void set_tests_failed_count(int) method." << std::endl
+      std::cout << "Warning: UnitTesting class." 									<< std::endl
+                << "void set_tests_failed_count(int) method." 					<< std::endl
                 << "Test failed count must be equal or greater than zero." << std::endl;
    }
    #endif
@@ -231,7 +231,7 @@ UnitTesting::assert_false( bool condition, const std::string& error_message )
 
    else
    {
-      message += "void assert_false(bool, const std::string&) method failed\n";
+      message += "void assert_false( bool, const std::string& ) method failed\n";
       message += error_message;
       tests_failed_count++;
    }
@@ -252,19 +252,26 @@ UnitTesting::print_results()
 {
    run_test_case();
 
-   std::cout << message << std::endl;
+	std::cout 								<< message 					<< std::endl	;
+	std::cout << "\nTest results:\n"									<< std::endl	;
+   std::cout << "   Tests run   : "	<< tests_count 			<< std::endl	;
+   std::cout << "   Tests passed: "	<< tests_passed_count 	<< std::endl	;
+   std::cout << "   Tests failed: "	<< tests_failed_count 	<< std::endl	;
+	
 
-   std::cout << "Tests run: " << tests_count << std::endl;
-   std::cout << "Tests passed: " << tests_passed_count << std::endl;
-   std::cout << "Tests failed: " << tests_failed_count << std::endl;
+	if		 ( tests_count 			== 0 )
 
-   if( tests_failed_count == 0 )
+		std::cout << "\nSomething went wrong, nothing got tested."						<< std::endl;
 
-      std::cout << "Test case OK." << std::endl;
+
+	else if( tests_failed_count == 0 )
+
+	   std::cout << "\nTest OK"																	<< std::endl;
+
 
    else
 
-      std::cout << "Test case NOT OK: " << tests_failed_count << " tests failed."  << std::endl;
+	   std::cout << "\nTest NOT OK. " << tests_failed_count << " tests failed"		<< std::endl;
 
 }
 
