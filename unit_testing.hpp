@@ -34,7 +34,6 @@ namespace tidbits
 
 class UnitTesting
 {
-
 	public:
 
 		explicit UnitTesting();

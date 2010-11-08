@@ -9,12 +9,12 @@
 
 #include <tidbits/unit_testing.hpp>
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <time.h>
 
+// language includes
+
+#include <iostream>
+#include <string>
+#include <cassert>
 
 
 namespace tidbits
@@ -102,18 +102,7 @@ UnitTesting::get_display()
 void
 UnitTesting::set_tests_count( int new_tests_count )
 {
-   // Control sentence (if debug)
-
-   #ifdef _DEBUG
-
-   if( new_tests_count < 0 )
-   {
-      std::cout << "Warning: UnitTesting class." 							<< std::endl
-                << "void set_tests_count(int) method." 					<< std::endl
-                << "Test count must be equal or greater than zero." 	<< std::endl;
-   }
-
-   #endif
+   assert( new_tests_count >= 0 );
 
    tests_count = new_tests_count;
 }
@@ -125,18 +114,7 @@ UnitTesting::set_tests_count( int new_tests_count )
 void
 UnitTesting::set_tests_passed_count( int new_tests_passed_count )
 {
-   // Control sentence (if debug)
-
-   #ifdef _DEBUG
-
-   if( new_tests_passed_count < 0 )
-   {
-      std::cout << "Warning: UnitTesting class." 									<< std::endl
-                << "void set_tests_passed_count(int) method."	 				<< std::endl
-                << "Test pased count must be equal or greater than zero." 	<< std::endl;
-   }
-
-   #endif
+   assert( new_tests_passed_count >= 0 );
 
    tests_passed_count = new_tests_passed_count;
 }
@@ -148,17 +126,7 @@ UnitTesting::set_tests_passed_count( int new_tests_passed_count )
 void
 UnitTesting::set_tests_failed_count( int new_tests_failed_count )
 {
-   // Control sentence (if debug)
-
-   #ifdef _DEBUG
-
-   if( new_tests_failed_count < 0 )
-   {
-      std::cout << "Warning: UnitTesting class." 									<< std::endl
-                << "void set_tests_failed_count(int) method." 					<< std::endl
-                << "Test failed count must be equal or greater than zero." << std::endl;
-   }
-   #endif
+   assert( new_tests_failed_count >= 0 );
 
    tests_failed_count = new_tests_failed_count;
 }
@@ -257,7 +225,7 @@ UnitTesting::print_results()
    std::cout << "   Tests run   : "	<< tests_count 			<< std::endl	;
    std::cout << "   Tests passed: "	<< tests_passed_count 	<< std::endl	;
    std::cout << "   Tests failed: "	<< tests_failed_count 	<< std::endl	;
-	
+
 
 	if		 ( tests_count 			== 0 )
 
