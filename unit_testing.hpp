@@ -20,6 +20,8 @@
 
 
 // Macro definitions
+// from: http://www.decompile.com/cpp/faq/file_and_line_error_string.htm
+// Note that __FILE__ does not work correctly on visual studio with /ZI
 
 #define STRING(x)		#x
 #define TOSTRING(x)	STRING(x)

@@ -1,0 +1,394 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<style type="text/css">
+p
+{
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 14px;
+}
+
+.sectionTitle
+{
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+PRE.smallCode {
+    font-size: x-small;
+  }
+  .cdK { color:black; font-weight:bold }
+  .cdC { color:maroon; font-style:normal }
+  .cdS { color:blue}
+  .cdQ { color:green}
+  .cdN { color:purple}
+.filename {
+	font-family: "Courier New", Courier, mono;
+	font-weight: bold;
+	color: #00f;
+
+}
+.menu {
+	font-family: "Courier New", Courier, mono;
+	color: #CC3300;
+}
+.function {
+	font-family: "Courier New", Courier, mono;
+	color: #0000CC;
+	background-color: #E6FFFF;
+	white-space: nowrap;
+	font-weight: bold;
+
+}
+.keyword {
+	font-family: "Courier New", Courier, mono;
+	font-weight: bold;
+}
+.variable {
+	font-family: "Courier New", Courier, mono;
+	font-weight: bold;
+	color: #FF0000;
+}
+/* PRE tag 'borrowed' from http://www.sohtanaka.com/web-design/styling-pre-tags-with-css-code-block/ */
+pre {
+	font-size: 13px;
+	padding: 0;
+	margin: 0;
+	background: #f0f0f0;
+	border: 1px solid #ccc;
+	line-height: 18px; /*--Height of each line of code--*/
+	background: url(data:image/gif;base64,R0lGODlhAQAkAIAAAP///+3z+SH5BAAAAAAALAAAAAABACQAAAIHhI95we3fCgA7) repeat left top; /*--Background of lined paper--*/
+	/* width: 600px; */
+	overflow: auto; /*--If the Code exceeds the width, a scrolling is available--*/
+	overflow-Y: hidden;  /*--Hides vertical scroll created by IE--*/
+}
+.folderName {
+	font-family: "Courier New", Courier, mono;
+	color: #0000CC;
+	background-color: #E6FFFF;
+	white-space: nowrap;
+	font-weight: bold;
+}
+.fileName {
+	font-family: "Courier New", Courier, mono;
+	color: #0000CC;
+	background-color: #E6FFFF;
+	white-space: nowrap;
+	font-weight: bold;
+}
+
+pre {
+	font-size: 13px;
+	padding-top: 0pt;
+	padding-right: 0pt;
+	padding-bottom: 0pt;
+	padding-left: 0pt;
+	margin-top: 0pt;
+	margin-right: 0pt;
+	margin-bottom: 0pt;
+	margin-left: 0pt;
+	border-top-width: 1px;
+	border-right-width-value: 1px;
+	border-right-width-ltr-source: physical;
+	border-right-width-rtl-source: physical;
+	border-bottom-width: 1px;
+	border-left-width-value: 1px;
+	border-left-width-ltr-source: physical;
+	border-left-width-rtl-source: physical;
+	border-top-style: solid;
+	border-right-style-value: solid;
+	border-right-style-ltr-source: physical;
+	border-right-style-rtl-source: physical;
+	border-bottom-style: solid;
+	border-left-style-value: solid;
+	border-left-style-ltr-source: physical;
+	border-left-style-rtl-source: physical;
+	border-top-color: #cccccc;
+	border-right-color-value: #cccccc;
+	border-right-color-ltr-source: physical;
+	border-right-color-rtl-source: physical;
+	border-bottom-color: #cccccc;
+	border-left-color-value: #cccccc;
+	border-left-color-ltr-source: physical;
+	border-left-color-rtl-source: physical;
+	line-height: 18px;
+	background-color: transparent;
+	background-image: url("pre_code_bg.gif");
+	background-repeat: repeat;
+	background-attachment: scroll;
+	background-position: left top;
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Using __FILE__ and __LINE__ to Report Errors</title>
+</head>
+<body>
+<h1>Using __FILE__ and __LINE__ 
+  to Report Errors</h1>
+<h6>by Curtis Krauskopf </h6>
+<p class="FAQQ">Q:&nbsp; How can I create a string that 
+  contains the C++ filename and line number that a runtime 
+  error occurs on? </p>
+<p><span class="FAQA">A:</span>&nbsp;&nbsp; The <span class="keyword">__FILE__</span> C++ preprocessor directive contains the name of the 
+  file being compiled. Similarly, the <span class="keyword">__LINE__</span> preprocessor directive contains the line number of the 
+  original source file that is being compiled. Both the <span class="keyword">__FILE__</span> and <span class="keyword">__LINE__</span> preprocessor directives have <em>two</em> underscores 
+  both before <em>and</em> after the word. Separating 
+  each character of the <span class="keyword">__FILE__</span> preprocessor directive looks like: </p>
+<p>_ _ F I L E _ _ </p>
+<p>Listing 1 is a console-mode application that shows 
+  an easy way to associate runtime errors with the original 
+  source line. </p>
+<table align="center" width="100%" border="1">
+  <tr>
+    <td><table width="100%" bgcolor="#CCCCCC">
+        <tr>
+          <td><pre class="cdCode">
+<b class="cdS">#</b><b class="cdK">include</b> <b class="cdS">&amp;lt</b>stdio<b class="cdS">.</b>h<b class="cdS">&gt;
+
+</b><b class="cdK">int</b> main<b class="cdS">(</b><b class="cdK">int</b> <b class="cdS">,</b> <b class="cdK">char</b><b class="cdS">**)
+{</b>
+  printf<b class="cdS">(</b><b class="cdQ">&quot;This fake error is in %s on line %d\n&quot;</b><b class="cdS">,</b><br />         __FILE__<b class="cdS">,</b> __LINE__<b class="cdS">);</b>
+  <b class="cdK">return</b> <b class="cdN">0</b><b class="cdS">;
+}</b>
+</pre></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td align="center">Listing 1: Show the Location of 
+      a Runtime Error </td>
+  </tr>
+</table>
+<p>Figure 1 shows the result of running the program in 
+  Listing 1: </p>
+<table align="center" width="100%" border="1">
+  <tr>
+    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" name="Output">
+        <tr>
+          <td width="12" height="13"><img src="/images/screen/top.left.gif" width="12" height="13" align="top" /></td>
+          <td bgcolor="#00FFFF" width="200" height="13"><img src="/siteimages/clearpixel.gif" width="1" height="13" align="top" /></td>
+          <td width="12" height="13"><img src="/images/screen/top.right.gif" width="12" height="13" align="top" /></td>
+        </tr>
+        <tr>
+          <td bgcolor="#00FFFF" width="12"><img src="/siteimages/clearpixel.gif" width="12" height="1" align="top" /></td>
+          <td bgcolor="#00FFFF" width="100%"> This fake 
+            error is in c:\temp\test.cpp on line 5</td>
+          <td bgcolor="#00FFFF" width="10"><img src="/siteimages/clearpixel.gif" width="10" height="1" align="top" /></td>
+        </tr>
+        <tr>
+          <td width="12" height="13"><img src="/images/screen/bottom.left.gif" width="12" height="13" align="top" /></td>
+          <td bgcolor="#00FFFF" width="100%" height="13"><img src="/siteimages/clearpixel.gif" width="1" height="13" align="top" /></td>
+          <td width="12" height="13"><img src="/images/screen/bottom.right.gif" width="12" height="13" align="top" /></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td align="center">Figure 1: The Output of Listing 
+      1 </td>
+  </tr>
+</table>
+<p class="sectionTitle"> Taking It One Step Further </p>
+<p>I want every error report to go through a common <span class="function">error()</span> function so that I can set breakpoints when certain 
+  errors occur and so I can segregate how errors are handled. 
+  For example, I might want some errors to appear on the 
+  screen and other errors to be logged to a file. And 
+  some errors might need to appear on the screen and be 
+  logged to a file. </p>
+<p>A prototype for such an error logging function is: </p>
+<p>&nbsp; </p>
+<pre class="cdCode">
+<b class="cdK">void</b> <b class="cdK">error</b><b class="cdS">(</b><b class="cdK">const</b> <b class="cdK">char</b> <b class="cdS">*</b>file<b class="cdS">,</b> <b class="cdK">const</b> <b class="cdK">unsigned</b> <b class="cdK">long</b> line<b class="cdS">,</b>
+<b class="cdK">const</b> <b class="cdK">char</b> <b class="cdS">*</b>msg<b class="cdS">);</b> 
+</pre>
+<p>and it would be called like this: </p>
+<p>&nbsp; </p>
+<pre class="cdCode">
+<b class="cdK">error</b><b class="cdS">(</b>__FILE__<b class="cdS">,</b> __LINE__<b class="cdS">,</b> <b class="cdQ">&quot;my error message&quot;</b><b class="cdS">);</b> 
+</pre>
+<p class="sectionTitle">Preprocessor Magic </p>
+<p>There are three awkward parts to the above solution: </p>
+<ol>
+  <li>The <span class="keyword">__FILE__</span> and <span class="keyword">__LINE__</span> preprocessor directives need to be added to every 
+    error() function call. </li>
+  <li>It's easy to forget to put both underscores on both 
+    parts of the <span class="keyword">__FILE__</span> and <span class="keyword">__LINE__</span> directives. 
+    Getting it wrong will lead to a compile-time error.</li>
+  <li><span class="keyword">__LINE__</span> is an integer. 
+    Doing string manipulation on an integer just adds 
+    another level of complexity to any <span class="function">error()</span> function I create. I will never need to use <span class="keyword">__LINE__</span> as an integer -- I always want to use it as a string 
+    so that it can be output to the screen or a log file.<br />
+  </li>
+</ol>
+<p> It would be nicer if <span class="keyword">__FILE__</span> and <span class="keyword">__LINE__</span> could somehow 
+  be handled automatically so I couldn't get them wrong 
+  every time I write an error() call. </p>
+<p>What I would like to be able to do is write something 
+  like: </p>
+<pre class="cdCode">
+<b class="cdK">error</b><b class="cdS">(</b>AT<b class="cdS">,</b> <b class="cdQ">&quot;my error message&quot;</b><b class="cdS">);</b> 
+</pre>
+<p>In the above example, the <span class="function">AT</span> macro would expand to be <span class="cdQ">&quot;c:\temp\test.cpp:5&quot;</span>. </p>
+<p>The prototype for my new <span class="function">error()</span> function becomes: </p>
+<pre class="cdCode">
+<b class="cdK">void</b> <b class="cdK">error</b><b class="cdS">(</b><b class="cdK">const</b> <b class="cdK">char</b> <b class="cdS">*</b>location<b class="cdS">,</b> <b class="cdK">const</b> <b class="cdK">char</b> <b class="cdS">*</b>msg<b class="cdS">);</b> 
+</pre>
+<p>Because the Borland C++ Builder compiler automatically 
+  merges adjacent strings, I can create a <span class="keyword">#define </span>for <span class="function">AT</span> that looks 
+  like this: </p>
+<pre class="cdCode">
+<b class="cdS">#</b><b class="cdK">define</b> AT __FILE__ <b class="cdQ">&quot;:&quot;</b> __LINE__ 
+</pre>
+<p>That doesn't work, though, because <span class="keyword">__LINE__</span> expands to an integer. The above <span class="keyword">#define </span>expands to this at compile-time: </p>
+<p><span class="cdQ">&quot;c:\temp\test.cpp&quot; &quot;:&quot;</span> <span class="cdC">5</span> </p>
+<p>That is an invalid string because strings can't have 
+  an unquoted integer at the end of the string. </p>
+<p>A special preprocessor directive that turns a symbol 
+  into a string is the <span class="keyword">#</span> token. Changing the above <span class="keyword">#define</span> to </p>
+<pre class="cdCode">
+<b class="cdS">#</b><b class="cdK">define</b> AT __FILE__ <b class="cdQ">&quot;:&quot;</b> <b class="cdS">#</b>__LINE__ 
+</pre>
+<p>seems like it should work but it doesn't because the 
+  compiler complains that <span class="keyword">#</span> is an illegal character. The problem is that the <span class="keyword">#</span> preprocessor symbol is only recognized when it's used 
+  like this: </p>
+<pre class="cdCode">
+<b class="cdS">#</b><b class="cdK">define</b> symbol<b class="cdS">(</b>X<b class="cdS">)</b> <b class="cdS">#</b>X 
+</pre>
+<p>So, not being one to fight the problem, I'll change 
+  my <span class="function">AT</span> macro to look like 
+  this: </p>
+<pre class="cdCode">
+<b class="cdS">#</b><b class="cdK">define</b> STRINGIFY<b class="cdS">(</b>x<b class="cdS">)</b> <b class="cdS">#</b>x
+<b class="cdS">#</b><b class="cdK">define</b> AT __FILE__ <b class="cdQ">&quot;:&quot;</b> STRINGIFY<b class="cdS">(</b>__LINE__<b class="cdS">)</b> 
+</pre>
+<p>That compiles, but at runtime it yields the bizarre 
+  message in Figure 2: </p>
+<table align="center" width="100%" border="1">
+  <tr>
+    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" name="Output">
+        <tr>
+          <td width="12" height="13"><img src="/images/screen/top.left.gif" width="12" height="13" align="top" /></td>
+          <td bgcolor="#00FFFF" width="200" height="13"><img src="/siteimages/clearpixel.gif" width="1" height="13" align="top" /></td>
+          <td width="12" height="13"><img src="/images/screen/top.right.gif" width="12" height="13" align="top" /></td>
+        </tr>
+        <tr>
+          <td bgcolor="#00FFFF" width="12"><img src="/siteimages/clearpixel.gif" width="12" height="1" align="top" /></td>
+          <td bgcolor="#00FFFF" width="100%"> c:\temp\test.cpp:__LINE__: 
+            fake error</td>
+          <td bgcolor="#00FFFF" width="10"><img src="/siteimages/clearpixel.gif" width="10" height="1" align="top" /></td>
+        </tr>
+        <tr>
+          <td width="12" height="13"><img src="/images/screen/bottom.left.gif" width="12" height="13" align="top" /></td>
+          <td bgcolor="#00FFFF" width="100%" height="13"><img src="/siteimages/clearpixel.gif" width="1" height="13" align="top" /></td>
+          <td width="12" height="13"><img src="/images/screen/bottom.right.gif" width="12" height="13" align="top" /></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td align="center">Figure 2: The preprocessor directive 
+      appears in the output. </td>
+  </tr>
+</table>
+<p>As shown in Figure 2, the <span class="keyword">__LINE__</span> preprocessor directive itself has become a part of the 
+  output! </p>
+<p>The solution is to take the <span class="function">STRINGIFY()</span> solution one step further -- to wrap the <span class="function">STRINGIFY() </span>macro in yet another macro: </p>
+<pre class="cdCode">
+<b class="cdS">#</b><b class="cdK">define</b> STRINGIFY<b class="cdS">(</b>x<b class="cdS">)</b> <b class="cdS">#</b>x
+<b class="cdS">#</b><b class="cdK">define</b> TOSTRING<b class="cdS">(</b>x<b class="cdS">)</b> STRINGIFY<b class="cdS">(</b>x<b class="cdS">)
+#</b><b class="cdK">define</b> AT __FILE__ <b class="cdQ">&quot;:&quot;</b> TOSTRING<b class="cdS">(</b>__LINE__<b class="cdS">)</b>
+</pre>
+<p>Listing 2 shows the final sample program and Figure 
+  3 shows the output of Listing 2. </p>
+<table align="center" width="100%" border="1">
+  <tr>
+    <td><table width="100%" bgcolor="#CCCCCC">
+        <tr>
+          <td><pre class="cdCode">
+<b class="cdS">#</b><b class="cdK">include</b> <b class="cdS">&amp;lt</b>stdio<b class="cdS">.</b>h<b class="cdS">&gt;
+#</b><b class="cdK">define</b> STRINGIFY<b class="cdS">(</b>x<b class="cdS">)</b> <b class="cdS">#</b>x
+<b class="cdS">#</b><b class="cdK">define</b> TOSTRING<b class="cdS">(</b>x<b class="cdS">)</b> STRINGIFY<b class="cdS">(</b>x<b class="cdS">)
+#</b><b class="cdK">define</b> AT __FILE__ <b class="cdQ">&quot;:&quot;</b> TOSTRING<b class="cdS">(</b>__LINE__<b class="cdS">)</b>
+<b class="cdK">void</b> <b class="cdK">error</b><b class="cdS">(</b><b class="cdK">const</b> <b class="cdK">char</b> <b class="cdS">*</b>location<b class="cdS">,</b> <b class="cdK">const</b> <b class="cdK">char</b> <b class="cdS">*</b>msg<b class="cdS">)
+{</b>
+  printf<b class="cdS">(</b><b class="cdQ">&quot;Error at %s: %s\n&quot;</b><b class="cdS">,</b> location<b class="cdS">,</b> msg<b class="cdS">);
+}</b>
+<b class="cdK">int</b> main<b class="cdS">(</b><b class="cdK">int</b> <b class="cdS">,</b> <b class="cdK">char</b><b class="cdS">**)
+{</b>
+  <b class="cdK">error</b><b class="cdS">(</b>AT<b class="cdS">,</b> <b class="cdQ">&quot;fake error&quot;</b><b class="cdS">);</b>
+  <b class="cdK">return</b> <b class="cdN">0</b><b class="cdS">;
+}</b>
+</pre></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td align="center">Listing 2: The final solution that 
+      turns __LINE__ into a string </td>
+  </tr>
+</table>
+<br />
+<table align="center" width="100%" border="1">
+  <tr>
+    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" name="Output">
+        <tr>
+          <td width="12" height="13"><img src="/images/screen/top.left.gif" width="12" height="13" align="top" /></td>
+          <td bgcolor="#00FFFF" width="200" height="13"><img src="/siteimages/clearpixel.gif" width="1" height="13" align="top" /></td>
+          <td width="12" height="13"><img src="/images/screen/top.right.gif" width="12" height="13" align="top" /></td>
+        </tr>
+        <tr>
+          <td bgcolor="#00FFFF" width="12"><img src="/siteimages/clearpixel.gif" width="12" height="1" align="top" /></td>
+          <td bgcolor="#00FFFF" width="100%"> Error at 
+            c:\temp\test\test.cpp:11: fake error</td>
+          <td bgcolor="#00FFFF" width="10"><img src="/siteimages/clearpixel.gif" width="10" height="1" align="top" /></td>
+        </tr>
+        <tr>
+          <td width="12" height="13"><img src="/images/screen/bottom.left.gif" width="12" height="13" align="top" /></td>
+          <td bgcolor="#00FFFF" width="100%" height="13"><img src="/siteimages/clearpixel.gif" width="1" height="13" align="top" /></td>
+          <td width="12" height="13"><img src="/images/screen/bottom.right.gif" width="12" height="13" align="top" /></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td align="center">Figure 3: The Output of Listing 
+      2 </td>
+  </tr>
+</table>
+<p class="sectionTitle">Visual Studio Support </p>
+<p>Tim Johnston tried this solution in Microsoft Video 
+  Studio but he found that the __LINE__ preprocessor symbol 
+  did not have the correct value in debug mode. His solution 
+  was to change the &quot;Debug Information Format&quot; 
+  setting on the C/C++ project setting tab. The setting 
+  that does not work is &quot;Program Database for Edit 
+  and Continue&quot;; the setting that works is &quot;Program 
+  Database&quot;. </p>
+<p class="sectionTitle">Conclusion: </p>
+<p>The preprocessor directives <span class="keyword">__FILE__</span> and <span class="keyword">__LINE__</span> can provide 
+  some useful debugging information. This information 
+  can be made available at runtime by <span class="function">print()</span>ing 
+  those values to the screen or to a log file.</p>
+<p>Transforming the <span class="keyword">__LINE__</span> preprocessor directive into a string turned out to be 
+  much more difficult than originally imagined. Through 
+  the use of some <span class="keyword">#define</span> preprocessor magic, though, the <span class="keyword">__LINE__</span> preprocessor directive was tamed and forced to compile 
+  as a string. </p>
+<p>This has the advantage that the string is automatically 
+  merged with the <span class="keyword">__FILE__</span> preprocessor value which creates one string for error 
+  processing. This also has the advantage of removing 
+  the need for integer to string conversion in the <span class="function">error()</span> function.</p>
+<hr id="HRRule1" width="89%" align="center" size="2" />
+<p><!-- #BeginLibraryItem "/Library/Written By CDK.lbi" --><font face="Arial, Helvetica, sans-serif" size="2">This 
+  article was written by Curtis Krauskopf.</font><!-- #EndLibraryItem --> </p>
+<p><!-- #BeginLibraryItem "/Library/CDK Biography.lbi" --><font face="Arial, Helvetica, sans-serif" size="2">Curtis Krauskopf is a software 
+  engineer and the president of The Database Managers (<a href="http://www.decompile.com/index.htm">www.decompile.com</a>). 
+  He has been writing code professionally for over 25 years. His prior projects 
+  include multiple web e-commerce applications, <a href="/dataflex/decompiler/index.htm">decompilers 
+  for the DataFlex language</a>, aircraft simulators, an automated Y2K conversion 
+  program for over 3,000,000 compiled DataFlex programs, and inventory control projects. 
+  Curtis has spoken at many domestic and international DataFlex developer conferences 
+  and has been published in FlexLines Online, <a href="/curtis/articles/JavaPro/index.htm">JavaPro 
+  Magazine</a>, <a href="http://www.drdobbs.com/cpp/184401943" target="_blank">C/C++ 
+  Users Journal</a> and C++ Builder Developer's Journal. </font><!-- #EndLibraryItem --> </p>
+</body>
+</html>
